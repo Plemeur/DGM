@@ -12,6 +12,8 @@ torch.manual_seed(42)
 
 
 class Linear(nn.Module):
+    """ Copy of linear module from Pytorch, modified to have a Xavier init,
+        TODO : figure out what to do with the bias"
     def __init__(self, in_features, out_features, bias=True):
         super(Linear, self).__init__()
         self.in_features = in_features
@@ -38,6 +40,7 @@ class Linear(nn.Module):
 
 
 class DGM_layer(nn.Module):
+    """ See readme for paper source"""
     def __init__(self, in_features, out_feature, residual=False):
         super(DGM_layer, self).__init__()
         self.residual = residual
@@ -75,19 +78,3 @@ class Net(nn.Module):
 
         return self.final_layer(s)
 
-
-
-
-
-"""
-from makedot import *
-test = torch.tensor([0.,0.])
-y=model(test)
-
-sample1 = torch.tensor(s1.get_sample(NS_1), requires_grad=True)
-V = model(sample1)
-V_p = torch.autograd.grad(V.sum(), sample1, create_graph=True, retain_graph=True)[0]
-V_s = torch.autograd.grad(V_p[:, 1].sum(), sample1, create_graph=True, retain_graph=True)[0]
-f = -0.5 * torch.pow(lambd, 2) * V_p[:, 0] ** 2 + (V_p[:, 0] + r * sample1[:, 1] * V_p[:, 1]) * V_s[:, 1]
-g = make_dot(f, model.state_dict())
-g.view()"""
